@@ -11,9 +11,19 @@ export default defineConfig({
       name: "mfe_accounting_app",
       filename: "remoteEntry.js",
       exposes: {
-        "./App": "./src/App",
+        "./App": "./src/App.tsx",
       },
-      shared: ["react", "react-dom","react-router-dom"],
+      shared: {
+        react: {
+          requiredVersion: "^19.2.0",
+        },
+        "react-dom": {
+          requiredVersion: "^19.2.0",
+        },
+        "react-router-dom": {
+          requiredVersion: "^7.0.0",
+        },
+      },
     }),
   ],
   build: {
@@ -23,6 +33,11 @@ export default defineConfig({
     cssCodeSplit: false,
   },
   preview: {
+    port: 5002,
+    strictPort: true,
+    cors: true,
+  },
+  server: {
     port: 5002,
     strictPort: true,
     cors: true,
