@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@faker-js/faker": "^10.2.0",
+    "@faker-js/faker": "^10.3.0",
     "@headlessui/react": "^2.2.9",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
