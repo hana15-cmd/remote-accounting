@@ -1,3 +1,4 @@
+import "./index.css";
 import SummaryCards from "./components/SummaryCards";
 import InvoiceForm from "./components/InvoiceForm";
 import InvoiceTable from "./components/InvoiceTable";
