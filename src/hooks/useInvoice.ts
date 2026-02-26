@@ -41,6 +41,8 @@ export function useInvoices() {
     pending: invoices
       .filter((i) => i.status === "Pending")
       .reduce((sum, i) => sum + i.amount, 0),
+    paidCount: invoices.filter((i) => i.status === "Paid").length,
+    pendingCount: invoices.filter((i) => i.status === "Pending").length,
   };
 
   return {

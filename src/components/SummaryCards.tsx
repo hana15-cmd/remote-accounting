@@ -3,6 +3,8 @@ type Props = {
   paid: number;
   pending: number;
   count: number;
+  paidCount: number;
+  pendingCount: number;
 };
 
 export default function SummaryCards({
@@ -10,12 +12,14 @@ export default function SummaryCards({
   paid,
   pending,
   count,
+  paidCount,
+  pendingCount,
 }: Props) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <Card title="Total" value={total} count={count} />
-      <Card title="Paid" value={paid} color="text-green-400" />
-      <Card title="Pending" value={pending} color="text-yellow-400" />
+      <Card title="Total Invoices" value={total} count={count} />
+      <Card title="Paid" value={paid} count={paidCount} color="text-green-400" />
+      <Card title="Pending" value={pending} count={pendingCount} color="text-yellow-400" />
     </div>
   );
 }

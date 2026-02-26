@@ -20,6 +20,8 @@ export default function AccountingApp() {
         paid={totals.paid}
         pending={totals.pending}
         count={invoices.length}
+        paidCount={totals.paidCount}
+        pendingCount={totals.pendingCount}
       />
 
       <InvoiceForm onAdd={addInvoice} />
