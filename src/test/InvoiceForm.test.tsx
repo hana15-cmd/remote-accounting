@@ -7,22 +7,21 @@ describe('InvoiceForm', () => {
   it('should render form title', () => {
     const mockOnAdd = vi.fn();
     render(<InvoiceForm onAdd={mockOnAdd} />);
-    expect(screen.getByText('Add New Invoice')).toBeInTheDocument();
+    expect(screen.getByText('Add Invoice')).toBeInTheDocument();
   });
 
   it('should render all form inputs', () => {
     const mockOnAdd = vi.fn();
     render(<InvoiceForm onAdd={mockOnAdd} />);
     
-    expect(screen.getByPlaceholderText('Client Name')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Client')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Amount')).toBeInTheDocument();
-    expect(screen.getByRole('combobox')).toBeInTheDocument();
   });
 
   it('should render submit button', () => {
     const mockOnAdd = vi.fn();
     render(<InvoiceForm onAdd={mockOnAdd} />);
-    expect(screen.getByRole('button', { name: /add invoice/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument();
   });
 
   it('should update client name input', async () => {
@@ -30,7 +29,7 @@ describe('InvoiceForm', () => {
     const mockOnAdd = vi.fn();
     render(<InvoiceForm onAdd={mockOnAdd} />);
     
-    const clientInput = screen.getByPlaceholderText('Client Name') as HTMLInputElement;
+    const clientInput = screen.getByPlaceholderText('Client') as HTMLInputElement;
     await user.type(clientInput, 'Test Client');
     expect(clientInput.value).toBe('Test Client');
   });
@@ -50,17 +49,21 @@ describe('InvoiceForm', () => {
     const mockOnAdd = vi.fn();
     render(<InvoiceForm onAdd={mockOnAdd} />);
     
-    const clientInput = screen.getByPlaceholderText('Client Name');
+    const clientInput = screen.getByPlaceholderText('Client');
     const amountInput = screen.getByPlaceholderText('Amount');
-    const statusSelect = screen.getByRole('combobox');
-    const submitButton = screen.getByRole('button', { name: /add invoice/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     
     await user.type(clientInput, 'New Client');
     await user.type(amountInput, '750');
-    await user.selectOptions(statusSelect, 'Paid');
     await user.click(submitButton);
     
     expect(mockOnAdd).toHaveBeenCalledTimes(1);
+    expect(mockOnAdd).toHaveBeenCalledWith({
+      client: 'New Client',
+      amount: 750,
+      status: 'Pending',
+      date: expect.any(String),
+    });
   });
 
   it('should clear form after submission', async () => {
@@ -68,9 +71,9 @@ describe('InvoiceForm', () => {
     const mockOnAdd = vi.fn();
     render(<InvoiceForm onAdd={mockOnAdd} />);
     
-    const clientInput = screen.getByPlaceholderText('Client Name') as HTMLInputElement;
+    const clientInput = screen.getByPlaceholderText('Client') as HTMLInputElement;
     const amountInput = screen.getByPlaceholderText('Amount') as HTMLInputElement;
-    const submitButton = screen.getByRole('button', { name: /add invoice/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     
     await user.type(clientInput, 'Test');
     await user.type(amountInput, '100');
@@ -78,5 +81,33 @@ describe('InvoiceForm', () => {
     
     expect(clientInput.value).toBe('');
     expect(amountInput.value).toBe('');
+  });
+  
+  it('should not submit form when client is missing', async () => {
+    const user = userEvent.setup();
+    const mockOnAdd = vi.fn();
+    render(<InvoiceForm onAdd={mockOnAdd} />);
+    
+    const amountInput = screen.getByPlaceholderText('Amount');
+    const submitButton = screen.getByRole('button', { name: /add/i });
+    
+    await user.type(amountInput, '100');
+    await user.click(submitButton);
+    
+    expect(mockOnAdd).not.toHaveBeenCalled();
+  });
+  
+  it('should not submit form when amount is missing', async () => {
+    const user = userEvent.setup();
+    const mockOnAdd = vi.fn();
+    render(<InvoiceForm onAdd={mockOnAdd} />);
+    
+    const clientInput = screen.getByPlaceholderText('Client');
+    const submitButton = screen.getByRole('button', { name: /add/i });
+    
+    await user.type(clientInput, 'Test Client');
+    await user.click(submitButton);
+    
+    expect(mockOnAdd).not.toHaveBeenCalled();
   });
 });

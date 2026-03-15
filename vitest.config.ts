@@ -15,7 +15,7 @@ export default defineConfig({
     },
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'html', 'lcov'],
       exclude: [
         'node_modules/',
         'src/test/',
@@ -23,7 +23,16 @@ export default defineConfig({
         '**/*.config.*',
         'dist/',
         '**/*.test.{ts,tsx}',
+        '**/*.css',
+        'src/main.tsx',
+        'src/data/generateInvoices.ts',
       ],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 75,
+        statements: 80,
+      },
     },
   },
   resolve: {
